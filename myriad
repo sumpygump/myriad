@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Myriad time"""
+
+from datetime import datetime
+import time
+import sys
+
+
+def myriad(timestamp, as_float=False):
+    """Return a timestamp in myriad format"""
+    if as_float:
+        return timestamp / 10000
+    ts_div = int(timestamp) / 10000
+    return f"{ts_div:10.4f}"
+
+
+def get_current_time():
+    """Get current unix timestamp"""
+    return time.time()
+
+
+def get_checkpoints(for_date=None):
+    """Get checkpoints for given day
+
+    Checkpoints are a list of notable times throughout the day
+
+    If no argument given it defaults to current day"""
+
+    checkpoints = []
+
+    if for_date:
+        now = datetime.strptime(for_date, "%Y-%m-%d")
+    else:
+        now = datetime.now()
+        # Add the current datetime to the list
+        checkpoints.append(("▶", int(now.timestamp())))
+
+    today = datetime(now.year, now.month, now.day)
+    current_day = today.day
+
+    # Precalculate noon
+    noon = datetime(now.year, now.month, now.day, 12)
+    got_noon = False
+
+    # Add midnight to the list
+    checkpoints.append(("☾", int(today.timestamp())))
+
+    # Stop after we cross over to tomorrow
+    while today.day == current_day:
+        next_myriad = int(myriad(today.timestamp(), as_float=True)) + 1
+        next_ts = int(next_myriad) * 10000
+        if int(noon.timestamp()) == next_ts:
+            got_noon = True
+            symbol = "☼"
+        else:
+            symbol = " "
+        checkpoints.append((symbol, next_ts))
+        today = datetime.fromtimestamp(next_ts)
+
+    # Also add noon to the list, if not already added
+    if not got_noon:
+        checkpoints.append(("☼", int(noon.timestamp())))
+
+    # Sort the list chronologically
+    return sorted(checkpoints, key=lambda tup: tup[1])
+
+
+if __name__ == "__main__":
+    # Main program
+
+    sys.argv.pop(0)  # Pop off program name
+
+    if "--checkpoints" in sys.argv:
+        sys.argv.pop(sys.argv.index("--checkpoints"))
+
+        a_date = None
+        if len(sys.argv) > 0:
+            a_date = sys.argv[0]
+
+        for checkpoint in get_checkpoints(a_date):
+            decoration, checkpoint_ts = checkpoint
+            print(
+                decoration,
+                myriad(checkpoint_ts),
+                datetime.fromtimestamp(checkpoint_ts),
+            )
+    else:
+        print(myriad(get_current_time()))
