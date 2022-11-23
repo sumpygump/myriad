@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
+
+        .wrapper {
+          max-width: 1024px;
+          margin: 0 auto;
+        }
+
+        .time {
+          font-family: 'Roboto Mono', monospace;
+          font-size: 120px;
+          text-align: center;
+          margin: 60px 0;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="time" id="myriad_time"></div>
+        </div>
+    <script>
+        function put_myriad_time() {
+          const unixTime = Math.floor(Date.now() / 1000);
+          const myriad = unixTime / 10000;
+          document.getElementById("myriad_time")
+             .textContent=myriad.toFixed(4);
+        }
+
+        var interval = 1000; // ms
+        var expected = Date.now() + interval;
+        setTimeout(step, interval);
+        function step() {
+          var dt = Date.now() - expected;
+          if (dt > interval) {
+            console.log("drift");
+          }
+          put_myriad_time();
+
+          expected += interval;
+          setTimeout(step, Math.max(0, interval - dt));
+        }
+    </script>
+    </body>
+</html>

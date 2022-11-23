@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+"""Serve the static webpage"""
+
+from http import server
+
+server.test(HandlerClass=server.SimpleHTTPRequestHandler, port=8002)
+
