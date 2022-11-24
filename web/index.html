@@ -1,46 +1,148 @@
-<html>
+<!doctype html>
+<html class="no-js" lang="en">
     <head>
+        <meta charset="utf-8">
+        <title>Myriad Time</title>
+        <meta name="description" content="Show the current myriad time">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#816e7f">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+
+        <meta property="og:title" content="Current Myriad Time">
+
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
 
-        .wrapper {
-          max-width: 1024px;
-          margin: 0 auto;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            position: relative;
+            max-width: 1280px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+
+        .inner {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
         }
 
         .time {
-          font-family: 'Roboto Mono', monospace;
-          font-size: 120px;
-          text-align: center;
-          margin: 60px 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
         }
+
+        .time .d {
+            background-color: transparent;
+            border-radius: 5px;
+            display: inline-block;
+            line-height: 100%;
+        }
+
+        .time .d:hover {
+            background-color: #eeeeee;
+        }
+
+        @media screen and (min-width: 500px) { .time { font-size: 60px; } }
+        @media screen and (min-width: 700px) { .time { font-size: 80px; } }
+        @media screen and (min-width: 900px) { .time { font-size: 100px; } }
+        @media screen and (min-width: 1100px) { .time { font-size: 120px; } }
+        @media screen and (min-width: 1300px) { .time { font-size: 140px; } }
+        @media screen and (min-width: 1500px) { .time { font-size: 150px; } }
         </style>
+        <link rel="stylesheet" href="css/tooltip.css">
     </head>
     <body>
-        <div class="wrapper">
-            <div class="time" id="myriad_time"></div>
+        <div class="container">
+            <div class="inner">
+                <div class="time" id="myriad_time">
+                    <span class="d d1" tooltip="Every 31.7 years" flow="down"></span>
+                    <span class="d d2" tooltip="Every 3.7 years" flow="down"></span>
+                    <span class="d d3" tooltip="Every 115.7 days" flow="down"></span>
+                    <span class="d d4" tooltip="Every 11.6 days" flow="down"></span>
+                    <span class="d d5" tooltip="Every 1.1 days" flow="down"></span>
+                    <span class="d d6" tooltip="Every 2.8 hours" flow="down"></span>
+                    <span class="d dot">.</span>
+                    <span class="d d7" tooltip="Every 16.6 minutes" flow="down"></span>
+                    <span class="d d8" tooltip="Every 1.6 minutes" flow="down"></span>
+                    <span class="d d9" tooltip="Every 10 seconds" flow="down"></span>
+                    <span class="d d10" tooltip="Every second" flow="down"></span>
+                </div>
+            </div>
         </div>
-    <script>
-        function put_myriad_time() {
-          const unixTime = Math.floor(Date.now() / 1000);
-          const myriad = unixTime / 10000;
-          document.getElementById("myriad_time")
-             .textContent=myriad.toFixed(4);
-        }
+        <script>
+            // Store the DOM element for the time
+            const time_element = document.getElementById("myriad_time");
 
-        var interval = 1000; // ms
-        var expected = Date.now() + interval;
-        setTimeout(step, interval);
-        function step() {
-          var dt = Date.now() - expected;
-          if (dt > interval) {
-            console.log("drift");
-          }
-          put_myriad_time();
+            // Track in ms the frequency to update
+            const interval = 1000;
 
-          expected += interval;
-          setTimeout(step, Math.max(0, interval - dt));
-        }
-    </script>
+            // Unix time is in ms, so divide by 1000 and then 10000
+            const myriad_divisor = 1000 * 10000;
+
+            // Set the time value to the digit DOM elements
+            function put_myriad_time(now) {
+                const myriad_time = Math.floor(now) / myriad_divisor;
+                const data_string = myriad_time.toFixed(4);
+                const digits = time_element.getElementsByClassName("d");
+
+                for (let i = 0; i < data_string.length; i++) {
+                    if (data_string[i] != ".") {
+                        digits[i].textContent = data_string[i];
+                    }
+                }
+            }
+
+            put_myriad_time(Date.now())
+
+            // Accurate timing
+            var expected = Date.now() + interval;
+            setTimeout(step, interval);
+            function step() {
+                const now = Date.now();
+                const str_time = now + '';
+                const delta = now - expected;
+
+                if (delta > interval) {
+                    console.log("drift");
+                }
+
+                // Calculate when the next step should happen
+                var next_step = Math.max(0, interval - delta);
+
+                if (str_time.substr(str_time.length - 3, 1) == "0") {
+                    // If the tenths place in ms is 0 we are within 100 ms of
+                    // the timestamp being right on (just changed to the next
+                    // second), that's good, move forward one second.
+                    expected += interval;
+                } else {
+                    // Let's adjust the time with some make up to get it back to 0
+                    next_step = interval - (now - Math.floor(now/1000)*1000);
+                    expected += next_step;
+                }
+
+                // Paint the myriad time
+                put_myriad_time(now);
+
+                setTimeout(step, next_step);
+            }
+        </script>
     </body>
 </html>
