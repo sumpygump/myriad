@@ -3,5 +3,5 @@
 
 from http import server
 
-server.test(HandlerClass=server.SimpleHTTPRequestHandler, port=8002)
+server.test(HandlerClass=server.SimpleHTTPRequestHandler, port=8003)
 

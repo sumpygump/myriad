@@ -12,7 +12,7 @@ in the number will change as time passes. For example, the first number in the
 every 3.7 years.
 
 ```
-  1    2    3    4    5    6    7    8    9    10 
+  1    2    3    4    5    6    7    8    9    10
 [ 1 ][ 6 ][ 6 ][ 9 ][ 0 ][ 4 ][ 1 ][ 8 ][ 5 ][ 4 ]
   |    |    |    |    |    |    |    |    |    |
   |    |    |    |    |    |    |    |    |    └─ 1 second

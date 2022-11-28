@@ -26,9 +26,18 @@
             box-sizing: border-box;
         }
 
+        .ui-light {
+            background-color: #ffffff;
+            color: #333333;
+        }
+
+        .ui-dark {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
         .container {
             position: relative;
-            max-width: 1280px;
             margin: 0 auto;
             height: 100vh;
         }
@@ -56,9 +65,30 @@
             line-height: 100%;
         }
 
-        .time .d:hover {
-            background-color: #eeeeee;
+        .ui-light .time .dv:hover { background-color: #eeeeee; }
+        .ui-dark .time .dv:hover { background-color: #444444; }
+
+        .ui-menu {
+            display: flex;
+                justify-content: flex-end;
         }
+
+        .ui-switch {
+            margin: 4px;
+            padding: 0;
+            display: inline-block;
+            width: 44px;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+
+        .ui-light .ui-switch:hover { background-color: #eeeeee; }
+        .ui-dark .ui-switch:hover { background-color: #444444; }
 
         @media screen and (min-width: 500px) { .time { font-size: 60px; } }
         @media screen and (min-width: 700px) { .time { font-size: 80px; } }
@@ -69,27 +99,29 @@
         </style>
         <link rel="stylesheet" href="css/tooltip.css">
     </head>
-    <body>
+    <body class="ui-light">
         <div class="container">
+            <div class="ui-menu"><div class="ui-switch">☀</div></div>
             <div class="inner">
                 <div class="time" id="myriad_time">
-                    <span class="d d1" tooltip="Every 31.7 years" flow="down"></span>
-                    <span class="d d2" tooltip="Every 3.7 years" flow="down"></span>
-                    <span class="d d3" tooltip="Every 115.7 days" flow="down"></span>
-                    <span class="d d4" tooltip="Every 11.6 days" flow="down"></span>
-                    <span class="d d5" tooltip="Every 1.1 days" flow="down"></span>
-                    <span class="d d6" tooltip="Every 2.8 hours" flow="down"></span>
+                    <span class="d dv d1" tooltip="Every 31.7 years" flow="down"></span>
+                    <span class="d dv d2" tooltip="Every 3.7 years" flow="down"></span>
+                    <span class="d dv d3" tooltip="Every 115.7 days" flow="down"></span>
+                    <span class="d dv d4" tooltip="Every 11.6 days" flow="down"></span>
+                    <span class="d dv d5" tooltip="Every 1.1 days" flow="down"></span>
+                    <span class="d dv d6" tooltip="Every 2.8 hours" flow="down"></span>
                     <span class="d dot">.</span>
-                    <span class="d d7" tooltip="Every 16.6 minutes" flow="down"></span>
-                    <span class="d d8" tooltip="Every 1.6 minutes" flow="down"></span>
-                    <span class="d d9" tooltip="Every 10 seconds" flow="down"></span>
-                    <span class="d d10" tooltip="Every second" flow="down"></span>
+                    <span class="d dv d7" tooltip="Every 16.6 minutes" flow="down"></span>
+                    <span class="d dv d8" tooltip="Every 1.6 minutes" flow="down"></span>
+                    <span class="d dv d9" tooltip="Every 10 seconds" flow="down"></span>
+                    <span class="d dv d10" tooltip="Every second" flow="down"></span>
                 </div>
             </div>
         </div>
         <script>
-            // Store the DOM element for the time
+            // Store the DOM element for the time display
             const time_element = document.getElementById("myriad_time");
+            const digits = time_element.getElementsByClassName("dv");
 
             // Track in ms the frequency to update
             const interval = 1000;
@@ -99,64 +131,91 @@
 
             // Set the time value to the digit DOM elements
             function put_myriad_time(now) {
-                const myriad_time = Math.floor(now) / myriad_divisor;
-                const data_string = myriad_time.toFixed(4);
-                const digits = time_element.getElementsByClassName("d");
+                const data_string = Math.floor(now / 1000) + '';
 
                 for (let i = 0; i < data_string.length; i++) {
-                    if (data_string[i] != ".") {
-                        digits[i].textContent = data_string[i];
-                    }
+                    digits[i].textContent = data_string[i];
                 }
             }
 
             put_myriad_time(Date.now())
 
             // Accurate timing
-            var expected = Date.now() + interval;
-            setTimeout(step, interval);
             function step() {
                 const now = Date.now();
-                const str_time = now + '';
-                const delta = now - expected;
-
-                if (delta > interval) {
-                    console.log("drift");
-                }
 
                 // Calculate when the next step should happen
-                var next_step = Math.max(0, interval - delta);
-
-                if (str_time.substr(str_time.length - 3, 1) == "0") {
-                    // If the tenths place in ms is 0 we are within 100 ms of
-                    // the timestamp being right on (just changed to the next
-                    // second), that's good, move forward one second.
-                    expected += interval;
-                } else {
-                    // Let's adjust the time with some make up to get it back to 0
-                    next_step = interval - (now - Math.floor(now/1000)*1000);
-                    expected += next_step;
-                }
+                const next_step = interval - (now - Math.floor(now/1000) * 1000);
 
                 // Paint the myriad time
                 put_myriad_time(now);
 
                 setTimeout(step, next_step);
             }
+            step(); // Start
 
             // Register the service worker
-        if ('serviceWorker' in navigator) {
-          // Wait for the 'load' event to not block other work
-          window.addEventListener('load', async () => {
-            // Try to register the service worker.
-            try {
-              let reg= await navigator.serviceWorker.register('sw.js');
-              console.log('Service worker registered! 😎', reg);
-            } catch (err) {
-              console.log('😥 Service worker registration failed: ', err);
+            if ('serviceWorker' in navigator) {
+                // Wait for the 'load' event to not block other work
+                window.addEventListener('load', async () => {
+                    // Try to register the service worker.
+                    try {
+                        let reg = await navigator.serviceWorker.register('sw.js');
+                        console.log('Service worker registered! 😎', reg);
+                    } catch (err) {
+                        console.log('😥 Service worker registration failed: ', err);
+                    }
+                });
             }
-          });
-        }
+
+            const UI = {
+                symbols: {ui_light: '☀', ui_dark: '☽'},
+                init: function() {
+                    this.switch = document.getElementsByClassName('ui-switch')[0];
+                    this.body = document.getElementsByTagName('body')[0];
+                    this.bind();
+                    const mode = Cookie.get('ui-mode');
+                    if (mode) {
+                        this.set_mode(mode);
+                    }
+                },
+                bind: function() {
+                    const self = this;
+                    document.addEventListener('click', function (event) {
+                        if (!event.target.matches('.ui-switch')) return;
+                        event.preventDefault();
+                        self.toggle_mode();
+                    }, false);
+                },
+                set_mode: function(mode) {
+                    this.body.className = mode;
+                    if (mode == 'ui-light') {
+                        this.switch.textContent = this.symbols.ui_light;
+                    } else {
+                        this.switch.textContent = this.symbols.ui_dark;
+                    }
+                    Cookie.set('ui-mode', mode);
+                },
+                toggle_mode: function() {
+                    var new_mode = (this.body.className == 'ui-light') ? 'ui-dark' : 'ui-light';
+                    this.set_mode(new_mode);
+                }
+            }
+            window.addEventListener('load', async () => {
+                UI.init();
+            });
+
+            const Cookie={
+                set: function(name, value) {
+                    document.cookie = `${name}=${value}; max-age=${60 * 60 * 24 * 14};`;
+                },
+                get: function(name) {
+                    let value = `; ${document.cookie}`;
+                    let parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                }
+            }
+
         </script>
     </body>
 </html>
