@@ -8,13 +8,14 @@ var basePath = '/';
 
 // List of the files to precache
 if (document.location.href.indexOf('localhost') > 0) {
-    basePath = '/';
+    precacheResources.push('/');
+    basePath = '';
 } else {
+    precacheResources.push('/');
     basePath = 'myriad/';
 }
 precacheResources.push.apply(
     precacheResources, [
-        basePath,
         `${basePath}site.webmanifest`,
         `${basePath}css/tooltip.css`,
         `${basePath}img/android-chrome-192x192.png`,
