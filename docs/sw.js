@@ -4,15 +4,13 @@ self.window = self;
 // Choose a cache name
 const cacheName = 'cache-v1';
 const precacheResources = [];
-var basePath = '/';
+var basePath = '';
 
 // List of the files to precache
 if (document.location.href.indexOf('localhost') > 0) {
     precacheResources.push('/');
-    basePath = '';
 } else {
     precacheResources.push('/');
-    basePath = 'myriad/';
 }
 precacheResources.push.apply(
     precacheResources, [
