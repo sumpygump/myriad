@@ -10,7 +10,7 @@ var basePath = '';
 if (document.location.href.indexOf('localhost') > 0) {
     precacheResources.push('/');
 } else {
-    precacheResources.push('/');
+    precacheResources.push('/myriad/');
 }
 precacheResources.push.apply(
     precacheResources, [
