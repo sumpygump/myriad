@@ -4,15 +4,9 @@ self.window = self;
 // Choose a cache name
 const cacheName = 'cache-v1';
 const precacheResources = [];
-var basePath = '';
+var basePath = '/';
 
 // List of the files to precache
-precacheResources.push('https://fonts.gstatic.com/s/robotomono/v22/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_Of2_ROW4.woff2');
-if (document.location.href.indexOf('localhost') > 0) {
-    basePath = '/';
-} else {
-    basePath = 'myriad/';
-}
 precacheResources.push.apply(
     precacheResources, [
         basePath,
@@ -26,6 +20,7 @@ precacheResources.push.apply(
         `${basePath}img/safari-pinned-tab.svg`
     ]
 );
+precacheResources.push('https://fonts.gstatic.com/s/robotomono/v22/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_Of2_ROW4.woff2');
 
 // When the service worker is installing, open the cache and add the precache resources to it
 self.addEventListener('install', (event) => {
