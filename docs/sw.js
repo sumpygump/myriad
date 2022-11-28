@@ -7,6 +7,11 @@ const precacheResources = [];
 var basePath = '/';
 
 // List of the files to precache
+if (document.location.href.indexOf('localhost') > 0) {
+    basePath = '/';
+} else {
+    basePath = 'myriad/';
+}
 precacheResources.push.apply(
     precacheResources, [
         basePath,
