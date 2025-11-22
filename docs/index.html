@@ -11,6 +11,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
         <link rel="manifest" href="site.webmanifest">
         <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#816e7f">
+        <link rel="stylesheet" href="lib/fontawesome/css/fa-selected-solid.css?v=1" type="text/css" media="screen" />
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
@@ -34,6 +35,10 @@
         .ui-dark {
             background-color: #333333;
             color: #ffffff;
+        }
+
+        .ui-warn {
+            background-color: tomato;
         }
 
         .container {
@@ -68,9 +73,139 @@
         .ui-light .time .dv:hover { background-color: #eeeeee; }
         .ui-dark .time .dv:hover { background-color: #444444; }
 
+        .ui-activity {
+            margin: 0;
+            position: absolute;
+            top: 0px;
+            width: 60%;
+            left: 20%;
+            right: 20%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ui-activity-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ui-buffer {
+            width: 38px;
+            margin-right: 24px;
+            padding: 4px;
+        }
+
+        .ui-activity-close {
+            font-size: 24px;
+            margin-left: 24px;
+            border-radius: 24px;
+            padding: 4px;
+        }
+
+        .ui-light .ui-activity-close:hover { background-color: #eeeeee; }
+        .ui-dark .ui-activity-close:hover { background-color: #444444; }
+
+        .ui-disp {
+            text-align: center;
+            font-size: 40px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
         .ui-menu {
             display: flex;
-                justify-content: flex-end;
+            justify-content: flex-end;
+        }
+
+        .ui-controls {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .ui-btn {
+            height: 44px;
+            width: 44px;
+            line-height: 44px;
+            text-align: center;
+            opacity: 10%;
+        }
+
+        .ui-btn:hover {
+            opacity: 100%;
+        }
+
+        .ui-btn_active {
+            background-color: #42b3ff;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            opacity: 100%;
+        }
+
+        .ui-forms {
+            position: absolute;
+            bottom: 44px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            z-index: 1002;
+        }
+
+        .ui-form {
+            padding: 21px;
+            background-color: #42b3ff;
+            border-radius: 15px;
+            color: #ffffff;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ui-hidden {
+            display: none;
+        }
+
+        .ui-answer {
+            padding-top: 6px;
+            animation: height 300ms ease-out;
+        }
+
+        .ui-form .ui-lbl {
+            padding-bottom: 6px;
+        }
+
+        .ui-form .ui-form-inputs {
+            display: flex;
+            align-items: center;
+        }
+
+        .ui-form .ui-txt input[type=text] {
+            font-size: 1rem;
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .ui-form .ui-submit {
+            padding-left: 6px;
+        }
+
+        .ui-form button,
+        .ui-form input[type=submit] {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 17px;
+            border-bottom: 1px solid #333333;
+            color: #333333;
+            padding: 6px;
+        }
+
+        .ui-form button:active,
+        .ui-form input[type=submit]:active {
+            border-bottom: 0 solid #333333;
+            border-top: 1px solid #42b3ff;
         }
 
         .ui-switch {
@@ -117,105 +252,52 @@
                     <span class="d dv d10" tooltip="Every second" flow="down"></span>
                 </div>
             </div>
+            <div class="ui-activity ui-hidden">
+                <div class="ui-activity-wrapper">
+                    <div class="ui-buffer"></div>
+                    <div class="ui-disp" id="activity_result" tooltip="" flow="down"></div>
+                    <div class="ui-activity-close" tooltip="Close" flow="down"><i class="fa fa-xmark"></i></div>
+                </div>
+            </div>
+            <div class="ui-forms">
+                <form class="ui-form ui-hidden form-dt2m" data="dt2m">
+                    <div class="ui-lbl">Enter date/time (YYYY-mm-dd H:m:s)</div>
+                    <div class="ui-form-inputs">
+                        <div class="ui-txt"><input type="text" name="f_input" /></div>
+                        <div class="ui-submit"><button><i class="fa fa-chevron-right"></i></button></div>
+                    </div>
+                    <div class="ui-answer ui-hidden" id="answer_m"></div>
+                </form>
+                <form class="ui-form ui-hidden form-m2dt" data="m2dt">
+                    <div class="ui-lbl">Enter myriad time:</div>
+                    <div class="ui-form-inputs">
+                        <div class="ui-txt"><input type="text" name="f_input" /></div>
+                        <div class="ui-submit"><button><i class="fa fa-chevron-right"></i></button></div>
+                    </div>
+                    <div class="ui-answer ui-hidden" id="answer_dt"></div>
+                </form>
+                <form class="ui-form ui-hidden form-timer" data="timer">
+                    <div class="ui-lbl">Set timer:</div>
+                    <div class="ui-form-inputs">
+                        <div class="ui-txt"><input type="text" name="f_input" /></div>
+                        <div class="ui-submit"><button><i class="fa fa-chevron-right"></i></button></div>
+                    </div>
+                </form>
+                <form class="ui-form ui-hidden form-alarm" data="alarm">
+                    <div class="ui-lbl">Set alarm:</div>
+                    <div class="ui-form-inputs">
+                        <div class="ui-txt"><input type="text" name="f_input" /></div>
+                        <div class="ui-submit"><button><i class="fa fa-chevron-right"></i></button></div>
+                    </div>
+                </form>
+            </div>
+            <div class="ui-controls">
+                <div class="ui-btn" data="form-dt2m" tooltip="Datetime to Myriad [d]"><i class="fa fa-calendar"></i></div>
+                <div class="ui-btn" data="form-m2dt" tooltip="Myriad to Datetime [m]"><i class="fa fa-atom"></i></div>
+                <div class="ui-btn" data="form-timer" tooltip="Set a timer [t]"><i class="fa fa-clock"></i></div>
+                <div class="ui-btn" data="form-alarm" tooltip="Set an alarm [a]"><i class="fa fa-alarm-clock"></i></div>
+            </div>
         </div>
-        <script>
-            // Store the DOM element for the time display
-            const time_element = document.getElementById("myriad_time");
-            const digits = time_element.getElementsByClassName("dv");
-
-            // Track in ms the frequency to update
-            const interval = 1000;
-
-            // Unix time is in ms, so divide by 1000 and then 10000
-            const myriad_divisor = 1000 * 10000;
-
-            // Set the time value to the digit DOM elements
-            function put_myriad_time(now) {
-                const data_string = Math.floor(now / 1000) + '';
-
-                for (let i = 0; i < data_string.length; i++) {
-                    digits[i].textContent = data_string[i];
-                }
-            }
-
-            put_myriad_time(Date.now())
-
-            // Accurate timing
-            function step() {
-                const now = Date.now();
-
-                // Calculate when the next step should happen
-                const next_step = interval - (now - Math.floor(now/1000) * 1000);
-
-                // Paint the myriad time
-                put_myriad_time(now);
-
-                setTimeout(step, next_step);
-            }
-            step(); // Start
-
-            // Register the service worker
-            if ('serviceWorker' in navigator) {
-                // Wait for the 'load' event to not block other work
-                window.addEventListener('load', async () => {
-                    // Try to register the service worker.
-                    try {
-                        let reg = await navigator.serviceWorker.register('sw.js');
-                        console.log('Service worker registered! 😎', reg);
-                    } catch (err) {
-                        console.log('😥 Service worker registration failed: ', err);
-                    }
-                });
-            }
-
-            const UI = {
-                symbols: {ui_light: '☀', ui_dark: '☽'},
-                init: function() {
-                    this.switch = document.getElementsByClassName('ui-switch')[0];
-                    this.body = document.getElementsByTagName('body')[0];
-                    this.bind();
-                    const mode = Cookie.get('ui-mode');
-                    if (mode) {
-                        this.set_mode(mode);
-                    }
-                },
-                bind: function() {
-                    const self = this;
-                    document.addEventListener('click', function (event) {
-                        if (!event.target.matches('.ui-switch')) return;
-                        event.preventDefault();
-                        self.toggle_mode();
-                    }, false);
-                },
-                set_mode: function(mode) {
-                    this.body.className = mode;
-                    if (mode == 'ui-light') {
-                        this.switch.textContent = this.symbols.ui_light;
-                    } else {
-                        this.switch.textContent = this.symbols.ui_dark;
-                    }
-                    Cookie.set('ui-mode', mode);
-                },
-                toggle_mode: function() {
-                    var new_mode = (this.body.className == 'ui-light') ? 'ui-dark' : 'ui-light';
-                    this.set_mode(new_mode);
-                }
-            }
-            window.addEventListener('load', async () => {
-                UI.init();
-            });
-
-            const Cookie={
-                set: function(name, value) {
-                    document.cookie = `${name}=${value}; max-age=${60 * 60 * 24 * 14};`;
-                },
-                get: function(name) {
-                    let value = `; ${document.cookie}`;
-                    let parts = value.split(`; ${name}=`);
-                    if (parts.length === 2) return parts.pop().split(';').shift();
-                }
-            }
-
-        </script>
+        <script src="js/main.js"></script>
     </body>
 </html>
