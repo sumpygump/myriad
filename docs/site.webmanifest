@@ -6,8 +6,8 @@
     "start_url": "/myriad/?source=myriad-pwa",
     "id": "/myriad/?source=myriad-pwa",
     "display": "standalone",
-    "background_color": "#608060",
-    "theme_color": "#826a83",
+    "background_color": "#444444",
+    "theme_color": "#42b3ff",
     "description": "Shows the current myriad timestamp",
     "icons": [
         {
