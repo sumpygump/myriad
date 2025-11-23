@@ -11,7 +11,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
         <link rel="manifest" href="site.webmanifest">
         <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#816e7f">
-        <link rel="stylesheet" href="lib/fontawesome/css/fa-selected-solid.css?v=1" type="text/css" media="screen" />
+        <link rel="stylesheet" href="lib/fontawesome/css/fa-selected-solid.css?v=2" type="text/css" media="screen" />
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
@@ -25,6 +25,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
         }
 
         .ui-light {
@@ -57,7 +61,7 @@
 
         .time {
             font-family: 'Roboto Mono', monospace;
-            font-size: 40px;
+            font-size: 50px;
             text-align: center;
             display: flex;
             justify-content: center;
@@ -76,7 +80,7 @@
         .ui-activity {
             margin: 0;
             position: absolute;
-            top: 0px;
+            top: 8%;
             width: 60%;
             left: 20%;
             right: 20%;
@@ -88,7 +92,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 12px;
+            border: 1px solid #eeeeee;
+            border-radius: 44px;
         }
+
+        .ui-light .ui-activity-wrapper { border-color: #d4d4d4; }
+        .ui-dark .ui-activity-wrapper { border-color: #5c5c5c; }
 
         .ui-buffer {
             width: 38px;
@@ -121,16 +131,19 @@
             position: absolute;
             display: flex;
             justify-content: center;
-            bottom: 0;
+            bottom: 6px;
             width: 100%;
         }
 
         .ui-btn {
             height: 44px;
             width: 44px;
-            line-height: 44px;
+            line-height: 48px;
             text-align: center;
-            opacity: 10%;
+            opacity: 30%;
+            background: transparent;
+            border: none;
+            color: #eeeeee;
         }
 
         .ui-btn:hover {
@@ -146,7 +159,7 @@
 
         .ui-forms {
             position: absolute;
-            bottom: 44px;
+            bottom: 48px;
             display: flex;
             justify-content: center;
             width: 100%;
@@ -168,8 +181,9 @@
         }
 
         .ui-answer {
-            padding-top: 6px;
-            animation: height 300ms ease-out;
+            padding-top: 9px;
+            font-family: 'Roboto Mono', monospace;
+            transition: display 1200ms;
         }
 
         .ui-form .ui-lbl {
@@ -214,7 +228,7 @@
             display: inline-block;
             width: 44px;
             height: 44px;
-            line-height: 44px;
+            line-height: 46px;
             text-align: center;
             font-size: 24px;
             cursor: pointer;
@@ -292,12 +306,12 @@
                 </form>
             </div>
             <div class="ui-controls">
-                <div class="ui-btn" data="form-dt2m" tooltip="Datetime to Myriad [d]"><i class="fa fa-calendar"></i></div>
-                <div class="ui-btn" data="form-m2dt" tooltip="Myriad to Datetime [m]"><i class="fa fa-atom"></i></div>
-                <div class="ui-btn" data="form-timer" tooltip="Set a timer [t]"><i class="fa fa-clock"></i></div>
-                <div class="ui-btn" data="form-alarm" tooltip="Set an alarm [a]"><i class="fa fa-alarm-clock"></i></div>
+                <button class="ui-btn" data="form-dt2m" tabindex="1" tooltip="Datetime to Myriad [d]"><i class="fa fa-calendar"></i></button>
+                <button class="ui-btn" data="form-m2dt" tabindex="2" tooltip="Myriad to Datetime [m]"><i class="fa fa-atom"></i></button>
+                <button class="ui-btn" data="form-timer" tabindex="3" tooltip="Set a timer [t]"><i class="fa fa-clock"></i></button>
+                <button class="ui-btn" data="form-alarm" tabindex="4" tooltip="Set an alarm [a]"><i class="fa fa-alarm-clock"></i></button>
             </div>
         </div>
-        <script src="js/main.js"></script>
+        <script src="js/main.js?v=2"></script>
     </body>
 </html>

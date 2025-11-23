@@ -79,6 +79,27 @@ const UI = {
     symbols: {ui_light: '☀', ui_dark: '☽'},
     activity: null,
     activity_result: null,
+    datetime_options: {
+        weekday: "short",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZoneName: "short"
+    },
+    datetime_utc_options: {
+        weekday: "short",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        timeZone: "UTC",
+        timeZoneName: "short"
+    },
     init: function() {
         this.switch = document.getElementsByClassName('ui-switch')[0];
         this.btns = document.getElementsByClassName('ui-btn');
@@ -119,20 +140,27 @@ const UI = {
         window.addEventListener('keyup', (e) => {
             const mod_mask = (e.shiftKey && MM_SHIFT) | (e.altKey && MM_ALT) | (e.ctrlKey && MM_CTRL);
             // console.log("Key", e.key, e.code, 'mod_mask', mod_mask, "Shift", e.shiftKey);
+            if (e.key == "Escape") {
+                self.hide_forms();
+            }
             if (e.target.tagName == 'INPUT') {
                 // If we are inside a text input, ignore
                 return;
             }
             switch (e.key) {
+                case '1': // passthru
                 case 'd':
                     self.toggle_form('form-dt2m');
                     break;
+                case '2': // passthru
                 case 'm':
                     self.toggle_form('form-m2dt');
                     break;
+                case '3': // passthru
                 case 't':
                     self.toggle_form('form-timer');
                     break;
+                case '4': // passthru
                 case 'a':
                     self.toggle_form('form-alarm');
                     break;
@@ -185,8 +213,6 @@ const UI = {
         for (const btn of this.btns) {
             btn.classList.remove('ui-btn_active');
         }
-        const answer_loc = document.getElementById('answer_dt');
-        answer_loc.classList.add('ui-hidden');
     },
     warn: function() {
         this.body.classList.add('ui-warn');
@@ -221,7 +247,8 @@ const UI = {
     calculate_m2dt: function(inputValue) {
         const answer_loc = document.getElementById('answer_dt');
         const date = new Date(parseFloat(inputValue) * 10000 * 1000);
-        answer_loc.innerHTML = date.toLocaleString();
+        answer_loc.innerHTML = `${date.toLocaleString('en-US', this.datetime_options)}<br />
+            ${date.toLocaleString('UTC', this.datetime_utc_options)}`;
         answer_loc.classList.remove('ui-hidden');
     },
     create_timer: function(inputValue) {
