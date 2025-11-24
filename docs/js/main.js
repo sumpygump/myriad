@@ -28,6 +28,9 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// NoSleep
+const noSleep = new NoSleep();
+
 const Myriad = {
     digits: [],
     process: null,
@@ -79,6 +82,7 @@ const UI = {
     symbols: {ui_light: '☀', ui_dark: '☽'},
     activity: null,
     activity_result: null,
+    sounds: [],
     datetime_options: {
         weekday: "short",
         year: "numeric",
@@ -109,6 +113,7 @@ const UI = {
         this.activity_close = document.getElementsByClassName("ui-activity-close")[0];
         this.activity_result = document.getElementById("activity_result");
 
+        this.load_sounds();
         this.bind();
         const mode = Cookie.get('ui-mode');
         if (mode) {
@@ -132,6 +137,7 @@ const UI = {
             self.stop_activity();
         });
         document.addEventListener('click', function (event) {
+            noSleep.enable(); // keep the screen on
             if (!event.target.matches('.ui-switch')) return;
             event.preventDefault();
             self.toggle_mode();
@@ -216,9 +222,13 @@ const UI = {
     },
     warn: function() {
         this.body.classList.add('ui-warn');
+        if (!this.sounds[0].playing()) {
+            this.sounds[0].play();
+        }
     },
     clear_warn: function() {
         this.body.classList.remove('ui-warn');
+        this.sounds[0].stop();
     },
     submit_form: function(form) {
         const action = form.getAttribute('data');
@@ -287,7 +297,12 @@ const UI = {
     },
     set_result: function(value) {
         this.activity_result.textContent = value;
-    }
+    },
+    load_sounds: function() {
+        const filename = 'timer-alarm-beeps.ogg';
+        const audio = new Howl({src: [filename], volume: 0.8, loop: true});
+        this.sounds.push(audio);
+    },
 }
 
 window.addEventListener('load', async () => {

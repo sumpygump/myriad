@@ -9,246 +9,16 @@
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-        <link rel="manifest" href="site.webmanifest">
+        <link rel="manifest" href="site.webmanifest?v=4">
         <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#816e7f">
-        <link rel="stylesheet" href="lib/fontawesome/css/fa-selected-solid.css?v=2" type="text/css" media="screen" />
+        <link rel="stylesheet" href="lib/fontawesome/css/fa-selected-solid.css?v=4" type="text/css" media="screen" />
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
 
         <meta property="og:title" content="Current Myriad Time">
 
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: sans-serif;
-        }
-
-        .ui-light {
-            background-color: #ffffff;
-            color: #333333;
-        }
-
-        .ui-dark {
-            background-color: #333333;
-            color: #ffffff;
-        }
-
-        .ui-warn {
-            background-color: tomato;
-        }
-
-        .container {
-            position: relative;
-            margin: 0 auto;
-            height: 100vh;
-        }
-
-        .inner {
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
-        }
-
-        .time {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 50px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .time .d {
-            background-color: transparent;
-            border-radius: 5px;
-            display: inline-block;
-            line-height: 100%;
-        }
-
-        .ui-light .time .dv:hover { background-color: #eeeeee; }
-        .ui-dark .time .dv:hover { background-color: #444444; }
-
-        .ui-activity {
-            margin: 0;
-            position: absolute;
-            top: 8%;
-            width: 60%;
-            left: 20%;
-            right: 20%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .ui-activity-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #eeeeee;
-            border-radius: 44px;
-        }
-
-        .ui-light .ui-activity-wrapper { border-color: #d4d4d4; }
-        .ui-dark .ui-activity-wrapper { border-color: #5c5c5c; }
-
-        .ui-buffer {
-            width: 38px;
-            margin-right: 24px;
-            padding: 4px;
-        }
-
-        .ui-activity-close {
-            font-size: 24px;
-            margin-left: 24px;
-            border-radius: 24px;
-            padding: 4px;
-        }
-
-        .ui-light .ui-activity-close:hover { background-color: #eeeeee; }
-        .ui-dark .ui-activity-close:hover { background-color: #444444; }
-
-        .ui-disp {
-            text-align: center;
-            font-size: 40px;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .ui-menu {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .ui-controls {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            bottom: 6px;
-            width: 100%;
-        }
-
-        .ui-btn {
-            height: 44px;
-            width: 44px;
-            line-height: 48px;
-            text-align: center;
-            opacity: 30%;
-            background: transparent;
-            border: none;
-            color: #eeeeee;
-        }
-
-        .ui-light .ui-btn { color: #444444; }
-        .ui-dark .ui-btn { color: #eeeeee; }
-
-        .ui-btn:hover {
-            opacity: 100%;
-        }
-
-        .ui-btn_active {
-            background-color: #42b3ff;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            opacity: 100%;
-        }
-
-        .ui-forms {
-            position: absolute;
-            bottom: 48px;
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            z-index: 1002;
-        }
-
-        .ui-form {
-            padding: 21px;
-            background-color: #42b3ff;
-            border-radius: 15px;
-            color: #ffffff;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ui-hidden {
-            display: none;
-        }
-
-        .ui-answer {
-            padding-top: 9px;
-            font-family: 'Roboto Mono', monospace;
-            transition: display 1200ms;
-        }
-
-        .ui-form .ui-lbl {
-            padding-bottom: 6px;
-        }
-
-        .ui-form .ui-form-inputs {
-            display: flex;
-            align-items: center;
-        }
-
-        .ui-form .ui-txt input[type=text] {
-            font-size: 1rem;
-            padding: 6px;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .ui-form .ui-submit {
-            padding-left: 6px;
-        }
-
-        .ui-form button,
-        .ui-form input[type=submit] {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 17px;
-            border-bottom: 1px solid #333333;
-            color: #333333;
-            padding: 6px;
-        }
-
-        .ui-form button:active,
-        .ui-form input[type=submit]:active {
-            border-bottom: 0 solid #333333;
-            border-top: 1px solid #42b3ff;
-        }
-
-        .ui-switch {
-            margin: 4px;
-            padding: 0;
-            display: inline-block;
-            width: 44px;
-            height: 44px;
-            line-height: 46px;
-            text-align: center;
-            font-size: 24px;
-            cursor: pointer;
-            border-radius: 50%;
-            background-color: transparent;
-        }
-
-        .ui-light .ui-switch:hover { background-color: #eeeeee; }
-        .ui-dark .ui-switch:hover { background-color: #444444; }
-
-        @media screen and (min-width: 500px) { .time { font-size: 60px; } }
-        @media screen and (min-width: 700px) { .time { font-size: 80px; } }
-        @media screen and (min-width: 900px) { .time { font-size: 100px; } }
-        @media screen and (min-width: 1100px) { .time { font-size: 120px; } }
-        @media screen and (min-width: 1300px) { .time { font-size: 140px; } }
-        @media screen and (min-width: 1500px) { .time { font-size: 150px; } }
-        </style>
+        <link rel="stylesheet" href="css/main.css?v=4">
         <link rel="stylesheet" href="css/tooltip.css">
     </head>
     <body class="ui-light">
@@ -315,6 +85,8 @@
                 <button class="ui-btn" data="form-alarm" tabindex="4" tooltip="Set an alarm [a]"><i class="fa fa-alarm-clock"></i></button>
             </div>
         </div>
-        <script src="js/main.js?v=2"></script>
+        <script src="js/howler.min.js"></script>
+        <script src="js/nosleep.min.js"></script>
+        <script src="js/main.js?v=4"></script>
     </body>
 </html>
