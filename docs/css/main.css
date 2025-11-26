@@ -56,6 +56,26 @@ body {
 .ui-light .time .dv:hover { background-color: #eeeeee; }
 .ui-dark .time .dv:hover { background-color: #444444; }
 
+.ui-day {
+    margin: 0;
+    position: absolute;
+    top: 68%;
+    width: 100%;
+    text-align: center;
+}
+
+.ui-day .day-lbl {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.ui-day .day-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 40px;
+}
+
 .ui-activity {
     margin: 0;
     position: absolute;
@@ -90,6 +110,7 @@ body {
     margin-left: 24px;
     border-radius: 24px;
     padding: 4px;
+    line-height: 20px;
 }
 
 .ui-light .ui-activity-close:hover { background-color: #eeeeee; }
@@ -99,6 +120,7 @@ body {
     text-align: center;
     font-size: 40px;
     font-family: 'Roboto Mono', monospace;
+    line-height: 32px;
 }
 
 .ui-menu {

@@ -1,7 +1,7 @@
 /**
  * Myriad JS Application Main
  *
- * 2025-11-22
+ * v.5 (2025-11-25)
  */
 
 // Track in ms the frequency to update
@@ -20,7 +20,7 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
         // Try to register the service worker.
         try {
-            let reg = await navigator.serviceWorker.register('sw.js');
+            let reg = await navigator.serviceWorker.register('sw.js?v=myriad.5');
             console.log('Service worker registered! 😎', reg);
         } catch (err) {
             console.log('😥 Service worker registration failed: ', err);
@@ -39,14 +39,17 @@ const Myriad = {
         const time_element = document.getElementById("myriad_time");
         this.digits = time_element.getElementsByClassName("dv");
 
-
         this.step();
     },
     put_myriad_time: function(now) {
-        const data_string = Math.floor(now / 1000) + '';
+        const now_ts = now / 1000;
+        const data_string = Math.floor(now_ts) + '';
         for (let i = 0; i < data_string.length; i++) {
             this.digits[i].textContent = data_string[i];
         }
+        const midnight = new Date();
+        midnight.setUTCHours(0,0,0,0);
+        UI.put_day_myriad(((now_ts - midnight.getTime() / 1000) / 10000).toFixed(4));
     },
     step: function() {
         // Accurate timing
@@ -79,6 +82,7 @@ const Myriad = {
 };
 
 const UI = {
+    day_element: document.getElementById('day_myriad'),
     symbols: {ui_light: '☀', ui_dark: '☽'},
     activity: null,
     activity_result: null,
@@ -175,6 +179,9 @@ const UI = {
                     break;
             }
         });
+    },
+    put_day_myriad: function(value) {
+        this.day_element.textContent = value;
     },
     set_mode: function(mode) {
         this.body.className = mode;

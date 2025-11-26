@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Myriad time"""
 
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 import sys
 
@@ -11,7 +11,15 @@ def myriad(timestamp, as_float=False):
     if as_float:
         return timestamp / 10000
     ts_div = int(timestamp) / 10000
-    return f"{ts_div:10.4f}"
+    return f"{ts_div:0.4f}"
+
+
+def day_myriad(timestamp: int) -> str:
+    """Return the day myriad (myriads since midnight)"""
+    now = datetime.fromtimestamp(timestamp, timezone.utc)
+    midnight = datetime(now.year, now.month, now.day, 0, 0, 0, 0, timezone.utc)
+    ts_div = (timestamp - midnight.timestamp()) / 10000
+    return f"{ts_div:0.4f}"
 
 
 def get_current_time():
@@ -84,5 +92,7 @@ if __name__ == "__main__":
                 myriad(checkpoint_ts),
                 datetime.fromtimestamp(checkpoint_ts),
             )
+    elif "--day" in sys.argv:
+        print(day_myriad(get_current_time()))
     else:
         print(myriad(get_current_time()))
